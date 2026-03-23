@@ -56,79 +56,52 @@ function getLocation() {
   });
 }
 
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRkspHvEda3a8NY7xf5XLCMzLZ3tYAY2koiYIe230qrb99z0aAO2VNyOiRdW7rytWHW07NWj3qZ6Ej/pub?output=csv";
-
-const app = document.getElementById("app");
-
-// Convert CSV → JSON
-function parseCSV(text) {
-  const rows = text.split("\n").map(r => r.split(","));
-  const headers = rows[0];
-
-  return rows.slice(1).map(row => {
-    let obj = {};
-    headers.forEach((h, i) => {
-      obj[h.trim()] = row[i];
-    });
-    return obj;
-  });
-}
-
-// Distance formula
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 3958.8;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) ** 2;
-
-  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-}
-
-function getLocation() {
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetch(SHEET_URL)
-      .then(res => res.text())
-      .then(csv => {
-        const data = parseCSV(csv);
-
-        const results = data.map(t => ({
-          ...t,
-          distance: getDistance(
-            pos.coords.latitude,
-            pos.coords.longitude,
-            parseFloat(t.latitude),
-            parseFloat(t.longitude)
-          )
-        }))
-        .filter(t => !isNaN(t.distance))
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 5);
-
-        showResults(results);
-      });
-  });
-}
-
 function showResults(data) {
-  app.innerHTML = `<h2>5 RV Techs Near You</h2>`;
+  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs Near You</h2>`;
 
   data.forEach((t, i) => {
+    const featured = i === 0;
+
     app.innerHTML += `
-      <div style="background:#fff;padding:16px;margin:10px;border-radius:12px;">
-        <h3>Mobile RV Technician</h3>
+      <div style="
+        background:#fff;
+        padding:16px;
+        margin:12px;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        ${featured ? "border:2px solid #007bff;" : ""}
+      ">
+        <h3 style="margin:0 0 8px 0;">
+          ${featured ? "⭐ Best Option" : "Mobile RV Technician"}
+        </h3>
+
         <p>${t.city}, ${t.state}</p>
-        <p>${Number(t.distance).toFixed(1)} miles away</p>
-        <p>${t.description}</p>
+        <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
+
+        <div style="margin:8px 0;">
+          ${t.services?.includes("Mobile") ? '<span style="background:#e3f2fd;padding:4px 8px;border-radius:8px;margin-right:6px;">Mobile</span>' : ""}
+          ${t.services?.includes("Shop") ? '<span style="background:#e8f5e9;padding:4px 8px;border-radius:8px;margin-right:6px;">Shop</span>' : ""}
+          ${t.services?.includes("Emergency") ? '<span style="background:#ffebee;padding:4px 8px;border-radius:8px;margin-right:6px;">Emergency</span>' : ""}
+        </div>
+
+        <p style="font-size:14px;">${t.description}</p>
 
         <p style="color:gray;">🔒 Unlock to view business name & contact</p>
 
-        <button onclick="unlock('${t.business_name}', '${t.phone}')">
-          View Contact
+        <button 
+          style="
+            width:100%;
+            padding:14px;
+            font-size:16px;
+            border:none;
+            border-radius:10px;
+            background:${featured ? "#007bff" : "#333"};
+            color:white;
+            margin-top:10px;
+          "
+          onclick="unlock('${t.business_name}', '${t.phone}')"
+        >
+          ${featured ? "View Best Option" : "View Contact"}
         </button>
       </div>
     `;
@@ -140,14 +113,11 @@ function unlock(name, phone) {
 }
 
 app.innerHTML = `
-  <h1>RV Repair Finder</h1>
-  <button onclick="getLocation()">Find Help Near Me</button>
-`;
-function unlock(name, phone) {
-  alert(`Unlocked!\n${name}\n${phone}`);
-}
-
-app.innerHTML = `
-  <h1>RV Repair Finder</h1>
-  <button onclick="getLocation()">Find Help Near Me</button>
+  <h1 style="text-align:center;">RV Repair Finder</h1>
+  <button 
+    style="width:90%;margin:20px auto;display:block;padding:16px;font-size:18px;border-radius:12px;"
+    onclick="getLocation()"
+  >
+    Find Help Near Me
+  </button>
 `;
