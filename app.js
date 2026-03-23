@@ -40,7 +40,7 @@ function getLocation() {
       .then(res => res.text())
       .then(csv => {
         const data = parseCSV(csv);
-
+        console.log(data[0]);
         const results = data.map(t => ({
           ...t,
           distance: getDistance(
