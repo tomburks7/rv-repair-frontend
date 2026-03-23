@@ -73,13 +73,13 @@ function getLocation() {
         .sort((a, b) => a.distance - b.distance)
         .slice(0, 5);
 
-        showResults(results);
+        showResults(results, "You");
       });
   });
 }
 
-function showResults(data) {
-  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs</h2>`;
+  function showResults(data, label = "You") {
+  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs Near ${label}</h2>`;
 
   data.forEach((t, i) => {
     const featured = i === 0;
@@ -176,7 +176,8 @@ function searchLocation() {
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 5);
 
-      showResults(results);
+      const label = query.charAt(0).toUpperCase() + query.slice(1);
+        showResults(results, label);
     });
 }
 app.innerHTML = `
