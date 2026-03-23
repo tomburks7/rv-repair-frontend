@@ -249,7 +249,7 @@ function searchLocation() {
   const raw = document.getElementById("searchInput").value.trim();
 
   // STEP 1: geocode the location (Dallas, GA, etc.)
-  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(raw)}&format=json&limit=1`)
+  fetch(`https://rv-repair-backend-production.up.railway.app/api/geocode?q=${encodeURIComponent(raw)}`)
     .then(res => res.json())
     .then(geo => {
       if (!geo || geo.length === 0) {
