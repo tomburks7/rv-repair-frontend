@@ -4,18 +4,19 @@ const app = document.getElementById("app");
 
 // Convert CSV → JSON
 function parseCSV(text) {
-  const rows = text.split("\n").map(r => r.split(","));
-  const headers = rows[0];
+  const rows = text.split("\n");
+  const headers = rows[0].split(",");
 
   return rows.slice(1).map(row => {
+    const values = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+
     let obj = {};
     headers.forEach((h, i) => {
-      obj[h.trim()] = row[i];
+      obj[h.trim()] = values ? values[i]?.replace(/"/g, "") : "";
     });
     return obj;
   });
 }
-
 // Distance formula
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 3958.8;
