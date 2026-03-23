@@ -198,15 +198,22 @@ function completeUnlock() {
 function searchLocation() {
   const raw = document.getElementById("searchInput").value.trim().toLowerCase();
 
-  // Split input like "dallas, tx"
   let cityQuery = "";
   let stateQuery = "";
 
+  // Handle "dallas, tx"
   if (raw.includes(",")) {
     const parts = raw.split(",");
     cityQuery = parts[0].trim();
     stateQuery = parts[1].trim();
-  } else {
+  }
+  // Handle "dallas tx"
+  else if (raw.split(" ").length === 2) {
+    const parts = raw.split(" ");
+    cityQuery = parts[0].trim();
+    stateQuery = parts[1].trim();
+  }
+  else {
     cityQuery = raw;
   }
 
@@ -215,18 +222,29 @@ function searchLocation() {
     .then(csv => {
       const data = parseCSV(csv);
 
-      // STEP 1: find best match location
-      const match = data.find(t => {
+      // STEP 1: try exact city + state match
+      let match = data.find(t => {
         const city = (t.city || "").toLowerCase().trim();
         const state = (t.state || "").toLowerCase().trim();
-        const zip = (t.zip || "").toLowerCase().trim();
 
-        if (stateQuery) {
-          return city.includes(cityQuery) && state.includes(stateQuery);
-        }
-
-        return city.includes(cityQuery) || zip.includes(cityQuery);
+        return city.includes(cityQuery) && state.includes(stateQuery);
       });
+
+      // STEP 2: fallback to city only
+      if (!match) {
+        match = data.find(t => {
+          const city = (t.city || "").toLowerCase().trim();
+          return city.includes(cityQuery);
+        });
+      }
+
+      // STEP 3: fallback to zip
+      if (!match) {
+        match = data.find(t => {
+          const zip = (t.zip || "").toLowerCase().trim();
+          return zip.includes(cityQuery);
+        });
+      }
 
       if (!match) {
         app.innerHTML = `<h2 style="padding:20px;">No results found</h2>`;
@@ -236,7 +254,6 @@ function searchLocation() {
       const searchLat = parseFloat(match.latitude);
       const searchLon = parseFloat(match.longitude);
 
-      // STEP 2: distance-based results
       const results = data.map(t => ({
         ...t,
         distance: getDistance(
@@ -246,12 +263,7 @@ function searchLocation() {
           parseFloat(t.longitude)
         )
       }))
-      .filter(t => {
-        if (isNaN(t.distance)) return false;
-        if (!activeFilter) return true;
-        const services = t.services || t.Services || "";
-        return services.includes(activeFilter);
-      })
+      .filter(t => !isNaN(t.distance))
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 5);
 
