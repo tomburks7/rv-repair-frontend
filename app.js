@@ -6,16 +6,31 @@ let activeFilter = null;
 
 // Convert CSV → JSON
 function parseCSV(text) {
-  const rows = text.split("\n");
+  const rows = text.split("\n").map(r => r.trim()).filter(r => r);
   const headers = rows[0].split(",");
 
   return rows.slice(1).map(row => {
-    const values = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+    const values = [];
+    let current = "";
+    let insideQuotes = false;
+
+    for (let char of row) {
+      if (char === '"') {
+        insideQuotes = !insideQuotes;
+      } else if (char === "," && !insideQuotes) {
+        values.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    values.push(current);
 
     let obj = {};
     headers.forEach((h, i) => {
-      obj[h.trim()] = values ? values[i]?.replace(/"/g, "") : "";
+      obj[h.trim()] = values[i]?.trim().replace(/^"|"$/g, "") || "";
     });
+
     return obj;
   });
 }
