@@ -97,7 +97,7 @@ function showResults(data) {
           ${featured ? "⭐ Best Option" : "Mobile RV Technician"}
         </h3>
 
-        <p>${t.city}, ${t.state}</p>
+        <p>${t.city || t.City}, ${t.state || t.State}</p>
         <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
 
         <div style="margin:8px 0;">
@@ -148,18 +148,25 @@ function searchLocation() {
       const data = parseCSV(csv);
 
       const results = data
+        .map(t => ({
+          ...t,
+          city: (t.city || "").toLowerCase().trim(),
+          state: (t.state || "").toLowerCase().trim(),
+          zip: (t.zip || "").toLowerCase().trim()
+        }))
         .filter(t => {
-          const city = (t.city || t.City || "").toLowerCase().trim();
-          const state = (t.state || t.State || "").toLowerCase().trim();
-          const zip = (t.zip || t.Zip || t["Zip Code"] || "").toLowerCase().trim();
-
           return (
-            city.includes(query) ||
-            state.includes(query) ||
-            zip.includes(query)
+            t.city.includes(query) ||
+            t.state.includes(query) ||
+            t.zip.includes(query)
           );
         })
         .slice(0, 5);
+
+      if (results.length === 0) {
+        app.innerHTML = `<h2 style="padding:20px;">No results found</h2>`;
+        return;
+      }
 
       showResults(results);
     });
