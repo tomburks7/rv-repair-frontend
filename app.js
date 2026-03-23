@@ -131,12 +131,66 @@ function getLocation() {
 }
 
 function unlock(name, phone) {
+  window.tempContact = { name, phone };
+
   app.innerHTML = `
     <div style="padding:20px;text-align:center;">
-      <h2>Unlock Contact Info</h2>
+      <h2>Unlock RV Technician</h2>
+
       <p style="margin:10px 0;">
-        Get instant access to this RV technician's name and phone number.
+        Get instant access to contact details for this RV repair technician.
       </p>
+
+      <div style="
+        background:#fff;
+        padding:20px;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        margin:20px;
+      ">
+        <p><strong>✔ Verified Technician</strong></p>
+        <p>✔ Fast Response</p>
+        <p>✔ Trusted Service</p>
+      </div>
+
+      <button 
+        style="
+          width:90%;
+          padding:16px;
+          font-size:18px;
+          border:none;
+          border-radius:12px;
+          background:#007bff;
+          color:white;
+          margin-top:20px;
+        "
+        onclick="completeUnlock()"
+      >
+        Unlock for $4.99
+      </button>
+
+      <p style="margin-top:10px;color:gray;font-size:14px;">
+        One-time access • No subscription
+      </p>
+    </div>
+  `;
+}
+
+function setFilter(filter) {
+  activeFilter = filter;
+  alert(filter ? `Filter: ${filter}` : "Showing all");
+}
+
+function goBack() {
+  location.reload();
+}
+
+function completeUnlock() {
+  const { name, phone } = window.tempContact;
+
+  app.innerHTML = `
+    <div style="padding:20px;text-align:center;">
+      <h2>Contact Unlocked</h2>
 
       <div style="
         background:#fff;
@@ -149,32 +203,28 @@ function unlock(name, phone) {
         <p style="font-size:18px;">${phone}</p>
       </div>
 
-      <button 
-        style="
-          width:90%;
-          padding:16px;
-          font-size:18px;
-          border:none;
-          border-radius:12px;
-          background:#28a745;
-          color:white;
-          margin-top:20px;
-        "
-        onclick="goBack()"
-      >
-        Continue
+      <a href="tel:${phone}">
+        <button 
+          style="
+            width:90%;
+            padding:16px;
+            font-size:18px;
+            border:none;
+            border-radius:12px;
+            background:#28a745;
+            color:white;
+            margin-top:20px;
+          "
+        >
+          Call Now
+        </button>
+      </a>
+
+      <button onclick="goBack()" style="margin-top:10px;">
+        Back to Results
       </button>
     </div>
   `;
-}
-
-function setFilter(filter) {
-  activeFilter = filter;
-  alert(filter ? `Filter: ${filter}` : "Showing all");
-}
-
-function goBack() {
-  location.reload();
 }
 
 function searchLocation() {
