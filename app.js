@@ -196,18 +196,36 @@ function completeUnlock() {
   `;
 }
 function searchLocation() {
-  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const raw = document.getElementById("searchInput").value.trim().toLowerCase();
+
+  // Split input like "dallas, tx"
+  let cityQuery = "";
+  let stateQuery = "";
+
+  if (raw.includes(",")) {
+    const parts = raw.split(",");
+    cityQuery = parts[0].trim();
+    stateQuery = parts[1].trim();
+  } else {
+    cityQuery = raw;
+  }
 
   fetch(SHEET_URL)
     .then(res => res.text())
     .then(csv => {
       const data = parseCSV(csv);
 
-      // STEP 1: find a matching city/zip to get coordinates
+      // STEP 1: find best match location
       const match = data.find(t => {
         const city = (t.city || "").toLowerCase().trim();
+        const state = (t.state || "").toLowerCase().trim();
         const zip = (t.zip || "").toLowerCase().trim();
-        return city.includes(query) || zip.includes(query);
+
+        if (stateQuery) {
+          return city.includes(cityQuery) && state.includes(stateQuery);
+        }
+
+        return city.includes(cityQuery) || zip.includes(cityQuery);
       });
 
       if (!match) {
@@ -218,7 +236,7 @@ function searchLocation() {
       const searchLat = parseFloat(match.latitude);
       const searchLon = parseFloat(match.longitude);
 
-      // STEP 2: calculate distance from that location
+      // STEP 2: distance-based results
       const results = data.map(t => ({
         ...t,
         distance: getDistance(
@@ -228,12 +246,20 @@ function searchLocation() {
           parseFloat(t.longitude)
         )
       }))
-      .filter(t => !isNaN(t.distance))
+      .filter(t => {
+        if (isNaN(t.distance)) return false;
+        if (!activeFilter) return true;
+        const services = t.services || t.Services || "";
+        return services.includes(activeFilter);
+      })
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 5);
 
-      const label = query.charAt(0).toUpperCase() + query.slice(1);
-        showResults(results, label);
+      const label = stateQuery
+        ? `${cityQuery.charAt(0).toUpperCase() + cityQuery.slice(1)}, ${stateQuery.toUpperCase()}`
+        : cityQuery.charAt(0).toUpperCase() + cityQuery.slice(1);
+
+      showResults(results, label);
     });
 }
 app.innerHTML = `
