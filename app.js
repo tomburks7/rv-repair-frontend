@@ -147,26 +147,34 @@ function searchLocation() {
     .then(csv => {
       const data = parseCSV(csv);
 
-      const results = data
-        .map(t => ({
-          ...t,
-          city: (t.city || "").toLowerCase().trim(),
-          state: (t.state || "").toLowerCase().trim(),
-          zip: (t.zip || "").toLowerCase().trim()
-        }))
-        .filter(t => {
-          return (
-            t.city.includes(query) ||
-            t.state.includes(query) ||
-            t.zip.includes(query)
-          );
-        })
-        .slice(0, 5);
+      // STEP 1: find a matching city/zip to get coordinates
+      const match = data.find(t => {
+        const city = (t.city || "").toLowerCase().trim();
+        const zip = (t.zip || "").toLowerCase().trim();
+        return city.includes(query) || zip.includes(query);
+      });
 
-      if (results.length === 0) {
+      if (!match) {
         app.innerHTML = `<h2 style="padding:20px;">No results found</h2>`;
         return;
       }
+
+      const searchLat = parseFloat(match.latitude);
+      const searchLon = parseFloat(match.longitude);
+
+      // STEP 2: calculate distance from that location
+      const results = data.map(t => ({
+        ...t,
+        distance: getDistance(
+          searchLat,
+          searchLon,
+          parseFloat(t.latitude),
+          parseFloat(t.longitude)
+        )
+      }))
+      .filter(t => !isNaN(t.distance))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 5);
 
       showResults(results);
     });
