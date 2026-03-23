@@ -64,7 +64,7 @@ function getLocation() {
 }
 
 function showResults(data) {
-  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs Near You</h2>`;
+  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs</h2>`;
 
   data.forEach((t, i) => {
     const featured = i === 0;
@@ -124,8 +124,39 @@ function setFilter(filter) {
   alert(filter ? `Filter: ${filter}` : "Showing all");
 }
 
+function searchLocation() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+
+  fetch(SHEET_URL)
+    .then(res => res.text())
+    .then(csv => {
+      const data = parseCSV(csv);
+
+      const results = data.filter(t => {
+        const city = t.city?.toLowerCase() || "";
+        const zip = t.zip?.toLowerCase() || "";
+
+        return city.includes(query) || zip.includes(query);
+      }).slice(0, 5);
+
+      showResults(results);
+    });
+}
+
 app.innerHTML = `
   <h1 style="text-align:center;">RV Repair Finder</h1>
+
+  <div style="padding:10px;text-align:center;">
+    <input 
+      id="searchInput"
+      placeholder="Enter city or zip"
+      style="width:80%;padding:12px;border-radius:10px;margin-bottom:10px;"
+    />
+
+    <br/>
+
+    <button onclick="searchLocation()">Search</button>
+  </div>
 
   <div style="padding:10px;text-align:center;">
     <button onclick="setFilter('Mobile')">Mobile</button>
