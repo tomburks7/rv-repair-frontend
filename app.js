@@ -85,6 +85,7 @@ function getLocation() {
 
   data.forEach((t, i) => {
     const featured = i === 0;
+    const services = t.services || t.Services || "";
 
     app.innerHTML += `
       <div style="
@@ -103,9 +104,9 @@ function getLocation() {
         <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
 
         <div style="margin:8px 0;">
-          ${t.services?.includes("Mobile") ? '<span style="background:#e3f2fd;padding:4px 8px;border-radius:8px;margin-right:6px;">Mobile</span>' : ""}
-          ${t.services?.includes("Shop") ? '<span style="background:#e8f5e9;padding:4px 8px;border-radius:8px;margin-right:6px;">Shop</span>' : ""}
-          ${t.services?.includes("Emergency") ? '<span style="background:#ffebee;padding:4px 8px;border-radius:8px;margin-right:6px;">Emergency</span>' : ""}
+          ${services.includes("Mobile") ? '<span style="background:#e3f2fd;padding:4px 8px;border-radius:8px;margin-right:6px;">Mobile</span>' : ""}
+          ${services.includes("Shop") ? '<span style="background:#e8f5e9;padding:4px 8px;border-radius:8px;margin-right:6px;">Shop</span>' : ""}
+          ${services.includes("Emergency") ? '<span style="background:#ffebee;padding:4px 8px;border-radius:8px;margin-right:6px;">Emergency</span>' : ""}
         </div>
 
         <p style="font-size:14px;">${t.description}</p>
@@ -113,28 +114,28 @@ function getLocation() {
         <p style="color:gray;">🔒 Unlock to view business name & contact</p>
 
         <button 
-  style="
-    width:100%;
-    padding:14px;
-    font-size:16px;
-    border:none;
-    border-radius:10px;
-    background:${featured ? "#007bff" : "#333"};
-    color:white;
-    margin-top:10px;
-  "
-  onclick="${
-    unlocked[t.business_name]
-      ? `window.location.href='tel:${t.phone}'`
-      : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
-  }"
->
-  ${
-    unlocked[t.business_name]
-      ? "Call Now"
-      : (featured ? "View Best Option" : "View Contact")
-  }
-</button>
+          style="
+            width:100%;
+            padding:14px;
+            font-size:16px;
+            border:none;
+            border-radius:10px;
+            background:${featured ? "#007bff" : "#333"};
+            color:white;
+            margin-top:10px;
+          "
+          onclick="${
+            unlocked[t.business_name]
+              ? `window.location.href='tel:${t.phone}'`
+              : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+          }"
+        >
+          ${
+            unlocked[t.business_name]
+              ? "Call Now"
+              : (featured ? "View Best Option" : "View Contact")
+          }
+        </button>
       </div>
     `;
   });
