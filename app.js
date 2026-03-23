@@ -131,12 +131,50 @@ function getLocation() {
 }
 
 function unlock(name, phone) {
-  alert(`Unlocked!\n${name}\n${phone}`);
+  app.innerHTML = `
+    <div style="padding:20px;text-align:center;">
+      <h2>Unlock Contact Info</h2>
+      <p style="margin:10px 0;">
+        Get instant access to this RV technician's name and phone number.
+      </p>
+
+      <div style="
+        background:#fff;
+        padding:20px;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        margin:20px;
+      ">
+        <p style="font-size:18px;"><strong>${name}</strong></p>
+        <p style="font-size:18px;">${phone}</p>
+      </div>
+
+      <button 
+        style="
+          width:90%;
+          padding:16px;
+          font-size:18px;
+          border:none;
+          border-radius:12px;
+          background:#28a745;
+          color:white;
+          margin-top:20px;
+        "
+        onclick="goBack()"
+      >
+        Continue
+      </button>
+    </div>
+  `;
 }
 
 function setFilter(filter) {
   activeFilter = filter;
   alert(filter ? `Filter: ${filter}` : "Showing all");
+}
+
+function goBack() {
+  location.reload();
 }
 
 function searchLocation() {
