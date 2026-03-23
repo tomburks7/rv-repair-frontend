@@ -134,9 +134,9 @@ function searchLocation() {
 
       const results = data
         .filter(t => {
-          const city = (t.city || "").toLowerCase().trim();
-          const state = (t.state || "").toLowerCase().trim();
-          const zip = (t.zip || "").toLowerCase().trim();
+          const city = (t.city || t.City || "").toLowerCase().trim();
+          const state = (t.state || t.State || "").toLowerCase().trim();
+          const zip = (t.zip || t.Zip || t["Zip Code"] || "").toLowerCase().trim();
 
           return (
             city.includes(query) ||
