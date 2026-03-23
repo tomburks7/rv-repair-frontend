@@ -1,4 +1,6 @@
 let unlocked = {};
+let lastResults = [];
+let lastLabel = "You";
 
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRkspHvEda3a8NY7xf5XLCMzLZ3tYAY2koiYIe230qrb99z0aAO2VNyOiRdW7rytWHW07NWj3qZ6Ej/pub?output=csv";
 
@@ -81,6 +83,9 @@ function getLocation() {
 }
 
   function showResults(data, label = "You") {
+  lastResults = data;
+  lastLabel = label;
+  
   app.innerHTML = `<h2 style="padding:10px;">5 RV Techs Near ${label}</h2>`;
 
   data.forEach((t, i) => {
@@ -165,7 +170,7 @@ function setFilter(filter) {
 }
 
 function goBack() {
-  location.reload();
+  showResults(lastResults, lastLabel);
 }
 
 function completeUnlock() {
