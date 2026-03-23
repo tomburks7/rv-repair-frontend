@@ -46,14 +46,14 @@ function getLocation() {
           distance: getDistance(
             pos.coords.latitude,
             pos.coords.longitude,
-            parseFloat(t.latitude),
-            parseFloat(t.longitude)
+            parseFloat(t.latitude || t.Latitude),
+            parseFloat(t.longitude || t.Longitude)
           )
         }))
         .filter(t => {
           if (isNaN(t.distance)) return false;
           if (!activeFilter) return true;
-          return t.services?.includes(activeFilter);
+          return (t.services || t.Services || "").includes(activeFilter);
         })
         .sort((a, b) => a.distance - b.distance)
         .slice(0, 5);
