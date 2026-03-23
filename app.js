@@ -2,6 +2,8 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRkspHvEda3a
 
 const app = document.getElementById("app");
 
+let activeFilter = null;
+
 // Convert CSV → JSON
 function parseCSV(text) {
   const rows = text.split("\n");
@@ -48,7 +50,11 @@ function getLocation() {
             parseFloat(t.longitude)
           )
         }))
-        .filter(t => !isNaN(t.distance))
+        .filter(t => {
+          if (isNaN(t.distance)) return false;
+          if (!activeFilter) return true;
+          return t.services?.includes(activeFilter);
+        })
         .sort((a, b) => a.distance - b.distance)
         .slice(0, 5);
 
@@ -113,8 +119,21 @@ function unlock(name, phone) {
   alert(`Unlocked!\n${name}\n${phone}`);
 }
 
+function setFilter(filter) {
+  activeFilter = filter;
+  alert(filter ? `Filter: ${filter}` : "Showing all");
+}
+
 app.innerHTML = `
   <h1 style="text-align:center;">RV Repair Finder</h1>
+
+  <div style="padding:10px;text-align:center;">
+    <button onclick="setFilter('Mobile')">Mobile</button>
+    <button onclick="setFilter('Shop')">Shop</button>
+    <button onclick="setFilter('Emergency')">Emergency</button>
+    <button onclick="setFilter(null)">All</button>
+  </div>
+
   <button 
     style="width:90%;margin:20px auto;display:block;padding:16px;font-size:18px;border-radius:12px;"
     onclick="getLocation()"
