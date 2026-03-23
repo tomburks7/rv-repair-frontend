@@ -1,3 +1,5 @@
+let unlocked = {};
+
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRkspHvEda3a8NY7xf5XLCMzLZ3tYAY2koiYIe230qrb99z0aAO2VNyOiRdW7rytWHW07NWj3qZ6Ej/pub?output=csv";
 
 const app = document.getElementById("app");
@@ -111,71 +113,51 @@ function getLocation() {
         <p style="color:gray;">🔒 Unlock to view business name & contact</p>
 
         <button 
-          style="
-            width:100%;
-            padding:14px;
-            font-size:16px;
-            border:none;
-            border-radius:10px;
-            background:${featured ? "#007bff" : "#333"};
-            color:white;
-            margin-top:10px;
-          "
-          onclick="unlock('${t.business_name}', '${t.phone}')"
-        >
-          ${featured ? "View Best Option" : "View Contact"}
-        </button>
+  style="
+    width:100%;
+    padding:14px;
+    font-size:16px;
+    border:none;
+    border-radius:10px;
+    background:${featured ? "#007bff" : "#333"};
+    color:white;
+    margin-top:10px;
+  "
+  onclick="${
+    unlocked[t.business_name]
+      ? `window.location.href='tel:${t.phone}'`
+      : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+  }"
+>
+  ${
+    unlocked[t.business_name]
+      ? "Call Now"
+      : (featured ? "View Best Option" : "View Contact")
+  }
+</button>
       </div>
     `;
   });
 }
 
-function unlock(name, phone) {
-  window.tempContact = { name, phone };
+function unlock(name, phone, id) {
+  window.tempContact = { name, phone, id };
 
   app.innerHTML = `
     <div style="padding:20px;text-align:center;">
       <h2>Unlock RV Technician</h2>
 
-      <p style="margin:10px 0;">
-        Get instant access to contact details for this RV repair technician.
-      </p>
-
-      <div style="
-        background:#fff;
-        padding:20px;
-        border-radius:16px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        margin:20px;
-      ">
-        <p><strong>✔ Verified Technician</strong></p>
-        <p>✔ Fast Response</p>
-        <p>✔ Trusted Service</p>
-      </div>
+      <p>Get instant access to contact details.</p>
 
       <button 
-        style="
-          width:90%;
-          padding:16px;
-          font-size:18px;
-          border:none;
-          border-radius:12px;
-          background:#007bff;
-          color:white;
-          margin-top:20px;
-        "
+        style="width:90%;padding:16px;font-size:18px;border-radius:12px;background:#007bff;color:white;"
         onclick="completeUnlock()"
       >
         Unlock for $4.99
       </button>
-
-      <p style="margin-top:10px;color:gray;font-size:14px;">
-        One-time access • No subscription
-      </p>
     </div>
   `;
 }
-
 function setFilter(filter) {
   activeFilter = filter;
   alert(filter ? `Filter: ${filter}` : "Showing all");
@@ -186,47 +168,27 @@ function goBack() {
 }
 
 function completeUnlock() {
-  const { name, phone } = window.tempContact;
+  const { name, phone, id } = window.tempContact;
+
+  unlocked[id] = true;
 
   app.innerHTML = `
     <div style="padding:20px;text-align:center;">
       <h2>Contact Unlocked</h2>
 
-      <div style="
-        background:#fff;
-        padding:20px;
-        border-radius:16px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        margin:20px;
-      ">
-        <p style="font-size:18px;"><strong>${name}</strong></p>
-        <p style="font-size:18px;">${phone}</p>
-      </div>
+      <p><strong>${name}</strong></p>
+      <p>${phone}</p>
 
       <a href="tel:${phone}">
-        <button 
-          style="
-            width:90%;
-            padding:16px;
-            font-size:18px;
-            border:none;
-            border-radius:12px;
-            background:#28a745;
-            color:white;
-            margin-top:20px;
-          "
-        >
+        <button style="width:90%;padding:16px;background:#28a745;color:white;border-radius:12px;">
           Call Now
         </button>
       </a>
 
-      <button onclick="goBack()" style="margin-top:10px;">
-        Back to Results
-      </button>
+      <button onclick="goBack()">Back to Results</button>
     </div>
   `;
 }
-
 function searchLocation() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
 
