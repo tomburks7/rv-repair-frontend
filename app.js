@@ -125,24 +125,30 @@ function setFilter(filter) {
 }
 
 function searchLocation() {
-  const query = document.getElementById("searchInput").value.toLowerCase();
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
 
   fetch(SHEET_URL)
     .then(res => res.text())
     .then(csv => {
       const data = parseCSV(csv);
 
-      const results = data.filter(t => {
-        const city = t.city?.toLowerCase() || "";
-        const zip = t.zip?.toLowerCase() || "";
+      const results = data
+        .filter(t => {
+          const city = (t.city || "").toLowerCase().trim();
+          const state = (t.state || "").toLowerCase().trim();
+          const zip = (t.zip || "").toLowerCase().trim();
 
-        return city.includes(query) || zip.includes(query);
-      }).slice(0, 5);
+          return (
+            city.includes(query) ||
+            state.includes(query) ||
+            zip.includes(query)
+          );
+        })
+        .slice(0, 5);
 
       showResults(results);
     });
 }
-
 app.innerHTML = `
   <h1 style="text-align:center;">RV Repair Finder</h1>
 
