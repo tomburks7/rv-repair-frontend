@@ -196,82 +196,43 @@ function completeUnlock() {
   `;
 }
 function searchLocation() {
-  const raw = document.getElementById("searchInput").value.trim().toLowerCase();
+  const raw = document.getElementById("searchInput").value.trim();
 
-  let cityQuery = "";
-  let stateQuery = "";
-
-  // Handle "dallas, tx"
-  if (raw.includes(",")) {
-    const parts = raw.split(",");
-    cityQuery = parts[0].trim();
-    stateQuery = parts[1].trim();
-  }
-  // Handle "dallas tx"
-  else if (raw.split(" ").length === 2) {
-    const parts = raw.split(" ");
-    cityQuery = parts[0].trim();
-    stateQuery = parts[1].trim();
-  }
-  else {
-    cityQuery = raw;
-  }
-
-  fetch(SHEET_URL)
-    .then(res => res.text())
-    .then(csv => {
-      const data = parseCSV(csv);
-
-      // STEP 1: try exact city + state match
-      let match = data.find(t => {
-        const city = (t.city || "").toLowerCase().trim();
-        const state = (t.state || "").toLowerCase().trim();
-
-        return city.includes(cityQuery) && state.includes(stateQuery);
-      });
-
-      // STEP 2: fallback to city only
-      if (!match) {
-        match = data.find(t => {
-          const city = (t.city || "").toLowerCase().trim();
-          return city.includes(cityQuery);
-        });
-      }
-
-      // STEP 3: fallback to zip
-      if (!match) {
-        match = data.find(t => {
-          const zip = (t.zip || "").toLowerCase().trim();
-          return zip.includes(cityQuery);
-        });
-      }
-
-      if (!match) {
-        app.innerHTML = `<h2 style="padding:20px;">No results found</h2>`;
+  // STEP 1: geocode the location (Dallas, GA, etc.)
+  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(raw)}&format=json&limit=1`)
+    .then(res => res.json())
+    .then(geo => {
+      if (!geo || geo.length === 0) {
+        app.innerHTML = `<h2 style="padding:20px;">Location not found</h2>`;
         return;
       }
 
-      const searchLat = parseFloat(match.latitude);
-      const searchLon = parseFloat(match.longitude);
+      const searchLat = parseFloat(geo[0].lat);
+      const searchLon = parseFloat(geo[0].lon);
 
-      const results = data.map(t => ({
-        ...t,
-        distance: getDistance(
-          searchLat,
-          searchLon,
-          parseFloat(t.latitude),
-          parseFloat(t.longitude)
-        )
-      }))
-      .filter(t => !isNaN(t.distance))
-      .sort((a, b) => a.distance - b.distance)
-      .slice(0, 5);
+      // STEP 2: now use your sheet
+      fetch(SHEET_URL)
+        .then(res => res.text())
+        .then(csv => {
+          const data = parseCSV(csv);
 
-      const label = stateQuery
-        ? `${cityQuery.charAt(0).toUpperCase() + cityQuery.slice(1)}, ${stateQuery.toUpperCase()}`
-        : cityQuery.charAt(0).toUpperCase() + cityQuery.slice(1);
+          const results = data.map(t => ({
+            ...t,
+            distance: getDistance(
+              searchLat,
+              searchLon,
+              parseFloat(t.latitude),
+              parseFloat(t.longitude)
+            )
+          }))
+          .filter(t => !isNaN(t.distance))
+          .sort((a, b) => a.distance - b.distance)
+          .slice(0, 5);
 
-      showResults(results, label);
+          const label = raw.charAt(0).toUpperCase() + raw.slice(1);
+
+          showResults(results, label);
+        });
     });
 }
 app.innerHTML = `
