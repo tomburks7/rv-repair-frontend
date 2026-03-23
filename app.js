@@ -195,6 +195,56 @@ function completeUnlock() {
     </div>
   `;
 }
+
+function handleTyping() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+
+  if (query.length < 2) {
+    document.getElementById("suggestions").innerHTML = "";
+    return;
+  }
+
+  fetch(SHEET_URL)
+    .then(res => res.text())
+    .then(csv => {
+      const data = parseCSV(csv);
+
+      const matches = [];
+
+      data.forEach(t => {
+        const city = t.city || "";
+        const state = t.state || "";
+
+        const label = `${city}, ${state}`;
+
+        if (
+          label.toLowerCase().includes(query) &&
+          !matches.includes(label)
+        ) {
+          matches.push(label);
+        }
+      });
+
+      const topMatches = matches.slice(0, 5);
+
+      document.getElementById("suggestions").innerHTML =
+        topMatches.map(m => `
+          <div 
+            style="padding:10px;border-bottom:1px solid #eee;cursor:pointer;"
+            onclick="selectSuggestion('${m}')"
+          >
+            ${m}
+          </div>
+        `).join("");
+    });
+}
+
+function selectSuggestion(value) {
+  document.getElementById("searchInput").value = value;
+  document.getElementById("suggestions").innerHTML = "";
+  searchLocation();
+}
+
 function searchLocation() {
   const raw = document.getElementById("searchInput").value.trim();
 
@@ -240,10 +290,12 @@ app.innerHTML = `
 
   <div style="padding:10px;text-align:center;">
     <input 
-      id="searchInput"
-      placeholder="Enter city or zip"
-      style="width:80%;padding:12px;border-radius:10px;margin-bottom:10px;"
-    />
+  id="searchInput"
+  oninput="handleTyping()"
+  placeholder="Enter city or zip"
+  style="width:80%;padding:12px;border-radius:10px;margin-bottom:10px;"
+/>
+    <div id="suggestions" style="background:white;margin:0 20px;border-radius:10px;"></div>
 
     <br/>
 
