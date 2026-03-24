@@ -1,12 +1,11 @@
 let unlocked = {};
 let lastResults = [];
 let lastLabel = "You";
+let activeFilter = null;
 
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRkspHvEda3a8NY7xf5XLCMzLZ3tYAY2koiYIe230qrb99z0aAO2VNyOiRdW7rytWHW07NWj3qZ6Ej/pub?output=csv";
 
 const app = document.getElementById("app");
-
-let activeFilter = null;
 
 // Convert CSV → JSON
 function parseCSV(text) {
@@ -166,7 +165,7 @@ function unlock(name, phone, id) {
 }
 function setFilter(filter) {
   activeFilter = filter;
-  alert(filter ? `Filter: ${filter}` : "Showing all");
+  showResults(lastResults, lastLabel);
 }
 
 function goBack() {
@@ -304,10 +303,10 @@ app.innerHTML = `
     </button>
 
     <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-      <button class="button secondary" onclick="setFilter('Mobile')">Mobile</button>
-      <button class="button secondary" onclick="setFilter('Shop')">Shop</button>
-      <button class="button secondary" onclick="setFilter('Emergency')">Emergency</button>
-      <button class="button secondary" onclick="setFilter(null)">All</button>
+      <button class="button secondary ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
+      <button class="button secondary ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
+      <button class="button secondary ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
+      <button class="button secondary ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
     </div>
 
     <button class="button secondary" onclick="getLocation()">
