@@ -93,13 +93,6 @@ function getLocation() {
 
     app.innerHTML += `
       <div class="card ${featured ? "featured" : ""}">
-        background:#fff;
-        padding:16px;
-        margin:12px;
-        border-radius:16px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        ${featured ? "border:2px solid #007bff;" : ""}
-      ">
         <h3 style="margin:0 0 8px 0;">
           ${featured ? "⭐ Best Option" : "Mobile RV Technician"}
         </h3>
@@ -118,22 +111,13 @@ function getLocation() {
         <p style="color:gray;">🔒 Unlock to view business name & contact</p>
 
         <button 
-          class="button ${featured ? 'primary' : 'secondary'}"
-            width:100%;
-            padding:14px;
-            font-size:16px;
-            border:none;
-            border-radius:10px;
-            background:${featured ? "#007bff" : "#333"};
-            color:white;
-            margin-top:10px;
-          "
-          onclick="${
-            unlocked[t.business_name]
-              ? `window.location.href='tel:${t.phone}'`
-              : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
-          }"
-        >
+  class="button ${featured ? 'primary' : 'secondary'} full-width"
+  onclick="${
+    unlocked[t.business_name]
+      ? `window.location.href='tel:${t.phone}'`
+      : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+  }"
+>
           ${
             unlocked[t.business_name]
               ? "Call Now"
@@ -165,7 +149,14 @@ function unlock(name, phone, id) {
 }
 function setFilter(filter) {
   activeFilter = filter;
-  showResults(lastResults, lastLabel);
+
+  // Only refresh results if we actually have results
+  if (lastResults && lastResults.length > 0) {
+    showResults(lastResults, lastLabel);
+  } else {
+    // Just re-render home screen so buttons update
+    renderHome();
+  }
 }
 
 function goBack() {
