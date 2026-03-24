@@ -277,8 +277,8 @@ function searchLocation() {
             distance: getDistance(
               searchLat,
               searchLon,
-              parseFloat(t.latitude),
-              parseFloat(t.longitude)
+              parseFloat(t.latitude || t.Latitude),
+              parseFloat(t.longitude || t.Longitude)
             )
           }))
           .filter(t => {
