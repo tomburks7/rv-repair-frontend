@@ -265,7 +265,11 @@ function searchLocation() {
               parseFloat(t.longitude)
             )
           }))
-          .filter(t => !isNaN(t.distance))
+          .filter(t => {
+            if (isNaN(t.distance)) return false;
+            if (!activeFilter) return true;
+            return (t.services || t.Services || "").includes(activeFilter);
+          })
           .sort((a, b) => a.distance - b.distance)
           .slice(0, 5);
 
