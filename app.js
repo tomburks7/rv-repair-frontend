@@ -93,7 +93,7 @@ function getLocation() {
     const services = t.services || t.Services || "";
 
     app.innerHTML += `
-      <div style="
+      <div class="card ${featured ? "featured" : ""}">
         background:#fff;
         padding:16px;
         margin:12px;
@@ -109,9 +109,9 @@ function getLocation() {
         <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
 
         <div style="margin:8px 0;">
-          ${services.includes("Mobile") ? '<span style="background:#e3f2fd;padding:4px 8px;border-radius:8px;margin-right:6px;">Mobile</span>' : ""}
-          ${services.includes("Shop") ? '<span style="background:#e8f5e9;padding:4px 8px;border-radius:8px;margin-right:6px;">Shop</span>' : ""}
-          ${services.includes("Emergency") ? '<span style="background:#ffebee;padding:4px 8px;border-radius:8px;margin-right:6px;">Emergency</span>' : ""}
+          ${services.includes("Mobile") ? '<span class="badge mobile">Mobile</span>' : ""}
+          ${services.includes("Shop") ? '<span class="badge shop">Shop</span>' : ""}
+          ${services.includes("Emergency") ? '<span class="badge emergency">Emergency</span>' : ""}
         </div>
 
         <p style="font-size:14px;">${t.description}</p>
@@ -119,7 +119,7 @@ function getLocation() {
         <p style="color:gray;">🔒 Unlock to view business name & contact</p>
 
         <button 
-          style="
+          class="button ${featured ? 'primary' : 'secondary'}"
             width:100%;
             padding:14px;
             font-size:16px;
@@ -286,33 +286,33 @@ function searchLocation() {
     });
 }
 app.innerHTML = `
-  <h1 style="text-align:center;">RV Repair Finder</h1>
+  <div class="header">RV Repair Finder</div>
 
-  <div style="padding:10px;text-align:center;">
+  <div class="container">
+
     <input 
-  id="searchInput"
-  oninput="handleTyping()"
-  placeholder="Enter city or zip"
-  style="width:80%;padding:12px;border-radius:10px;margin-bottom:10px;"
-/>
-    <div id="suggestions" style="background:white;margin:0 20px;border-radius:10px;"></div>
+      id="searchInput"
+      oninput="handleTyping()"
+      placeholder="Enter city or zip"
+      style="width:100%;padding:14px;border-radius:12px;border:1px solid #ddd;margin-bottom:10px;"
+    />
 
-    <br/>
+    <div id="suggestions"></div>
 
-    <button onclick="searchLocation()">Search</button>
+    <button class="button primary" onclick="searchLocation()">
+      Search
+    </button>
+
+    <div style="margin-top:10px;text-align:center;">
+      <button onclick="setFilter('Mobile')">Mobile</button>
+      <button onclick="setFilter('Shop')">Shop</button>
+      <button onclick="setFilter('Emergency')">Emergency</button>
+      <button onclick="setFilter(null)">All</button>
+    </div>
+
+    <button class="button secondary" onclick="getLocation()">
+      Find Help Near Me
+    </button>
+
   </div>
-
-  <div style="padding:10px;text-align:center;">
-    <button onclick="setFilter('Mobile')">Mobile</button>
-    <button onclick="setFilter('Shop')">Shop</button>
-    <button onclick="setFilter('Emergency')">Emergency</button>
-    <button onclick="setFilter(null)">All</button>
-  </div>
-
-  <button 
-    style="width:90%;margin:20px auto;display:block;padding:16px;font-size:18px;border-radius:12px;"
-    onclick="getLocation()"
-  >
-    Find Help Near Me
-  </button>
 `;
