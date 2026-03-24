@@ -120,7 +120,7 @@ function getLocation() {
     </div>
 
     <button 
-      class="button ${featured ? 'primary' : 'secondary'}"
+      class="button primary"
       onclick="${
         unlocked[t.business_name]
           ? `window.location.href='tel:${t.phone}'`
