@@ -1,4 +1,4 @@
-let unlocked = {};
+let unlocked = JSON.parse(localStorage.getItem("unlocked") || "{}");
 let lastResults = [];
 let lastLabel = "You";
 let activeFilter = null;
@@ -185,6 +185,7 @@ function completeUnlock() {
   const { name, phone, id } = window.tempContact;
 
   unlocked[id] = true;
+  localStorage.setItem("unlocked", JSON.stringify(unlocked));
 
   app.innerHTML = `
     <div style="padding:20px;text-align:center;">
