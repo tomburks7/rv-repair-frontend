@@ -90,35 +90,7 @@ function getLocation() {
   <div class="header">RV Repair Finder</div>
 
   <div class="container">
-
-    <div class="card">
-
-      <input 
-        id="searchInput"
-        oninput="handleTyping()"
-        placeholder="Enter city or zip"
-        class="input"
-      />
-
-      <div id="suggestions"></div>
-
-      <button class="button primary full-width" onclick="searchLocation()">
-        Search
-      </button>
-
-      <div class="filters">
-        <button class="chip ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
-        <button class="chip ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
-        <button class="chip ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
-        <button class="chip ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
-      </div>
-
-    </div>
-
-    <button class="button secondary full-width" onclick="getLocation()">
-      📍 Find Help Near Me
-    </button>
-
+    <h2 style="padding:10px;">5 RV Techs Near ${label}</h2>
   </div>
 `;
 }
