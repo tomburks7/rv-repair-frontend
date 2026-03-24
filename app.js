@@ -266,7 +266,8 @@ function searchLocation() {
 
       const searchLat = parseFloat(geo[0].lat);
       const searchLon = parseFloat(geo[0].lon);
-
+      console.log("SEARCH LOCATION:", geo[0]);
+      
       // STEP 2: now use your sheet
       fetch(SHEET_URL)
         .then(res => res.text())
