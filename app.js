@@ -146,7 +146,7 @@ function setFilter(filter) {
 
   // If results exist → update results
   if (lastResults && lastResults.length > 0) {
-    showResults(lastResults, lastLabel);
+    searchLocation();
     return;
   }
 
