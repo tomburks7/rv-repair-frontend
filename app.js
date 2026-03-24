@@ -286,6 +286,7 @@ function renderHome() {
 
       <input 
         id="searchInput"
+        value="${document.getElementById('searchInput')?.value || ''}"
         oninput="handleTyping()"
         placeholder="Enter city or zip"
         style="width:100%;padding:14px;border-radius:12px;border:1px solid #ddd;margin-bottom:10px;"
