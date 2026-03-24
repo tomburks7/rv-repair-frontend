@@ -85,14 +85,57 @@ function getLocation() {
   function showResults(data, label = "You") {
   lastResults = data;
   lastLabel = label;
-  
-  app.innerHTML = `
-  <div class="header">RV Repair Finder</div>
 
-  <div class="container">
-    <h2 style="padding:10px;">5 RV Techs Near ${label}</h2>
-  </div>
-`;
+  app.innerHTML = `
+    <div class="header">RV Repair Finder</div>
+
+    <div class="container">
+      <h2 style="margin:10px 0;">5 RV Techs Near ${label}</h2>
+    </div>
+  `;
+
+  data.forEach((t, i) => {
+    const featured = i === 0;
+    const services = (t.services || t.Services || "").toLowerCase();
+
+    app.innerHTML += `
+      <div class="card ${featured ? "featured" : ""}">
+
+        <h3 style="margin:0 0 8px 0; font-size:${featured ? "20px" : "16px"};">
+          ${featured ? "⭐ Best RV Technician Near You" : "Mobile RV Technician"}
+        </h3>
+
+        <p>${t.city || t.City}, ${t.state || t.State}</p>
+        <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
+
+        <div style="margin:8px 0;">
+          ${services.includes("mobile") ? '<span class="badge mobile">Mobile</span>' : ""}
+          ${services.includes("shop") ? '<span class="badge shop">Shop</span>' : ""}
+          ${services.includes("emergency") ? '<span class="badge emergency">Emergency</span>' : ""}
+        </div>
+
+        <p style="font-size:14px;">${t.description}</p>
+
+        <p style="color:gray;">🔒 Unlock to view business name & contact</p>
+
+        <button 
+          class="button ${featured ? 'primary' : 'secondary'} full-width"
+          onclick="${
+            unlocked[t.business_name]
+              ? `window.location.href='tel:${t.phone.replace(/[^0-9]/g, "")}'`
+              : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+          }"
+        >
+          ${
+            unlocked[t.business_name]
+              ? "Call Now"
+              : (featured ? "View Best Option" : "View Contact")
+          }
+        </button>
+
+      </div>
+    `;
+  });
 }
 
 function unlock(name, phone, id) {
