@@ -159,27 +159,30 @@ function unlock(name, phone, id) {
 function setFilter(filter) {
   activeFilter = filter;
 
-  // If results exist → update results
-  if (lastResults && lastResults.length > 0) {
-  if (document.getElementById("searchInput")?.value) {
-    searchLocation();
-  }
-  return;
-}
+  const chips = document.querySelectorAll('.chip');
 
-  // Otherwise → just update button styles WITHOUT re-rendering
-  document.querySelectorAll('.chip').forEach(btn => {
+  chips.forEach(btn => {
     btn.classList.remove('active');
   });
 
-  if (filter === null) {
-    document.querySelectorAll('.chip')[3]?.classList.add('active');
-  } else {
-    const map = { Mobile: 0, Shop: 1, Emergency: 2 };
-    document.querySelectorAll('.chip')[map[filter]]?.classList.add('active');
+  chips.forEach(btn => {
+    const text = btn.textContent.trim();
+
+    if (
+      (filter === null && text === "All") ||
+      text === filter
+    ) {
+      btn.classList.add('active');
+    }
+  });
+
+  // If results exist → re-run search
+  if (lastResults && lastResults.length > 0) {
+    if (document.getElementById("searchInput")?.value) {
+      searchLocation();
+    }
   }
 }
-
 function goBack() {
   showResults(lastResults, lastLabel);
 }
