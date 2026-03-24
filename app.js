@@ -323,10 +323,10 @@ function renderHome() {
         </button>
 
         <div class="filters">
-          <button class="chip ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
-          <button class="chip ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
-          <button class="chip ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
-          <button class="chip ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+          <button class="chip mobile ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
+          <button class="chip shop ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
+          <button class="chip emergency ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
+          <button class="chip all ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
         </div>
 
       </div>
