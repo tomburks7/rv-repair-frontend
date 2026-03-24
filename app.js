@@ -151,15 +151,15 @@ function setFilter(filter) {
   }
 
   // Otherwise → just update button styles WITHOUT re-rendering
-  document.querySelectorAll('.button.secondary').forEach(btn => {
+  document.querySelectorAll('.chip').forEach(btn => {
     btn.classList.remove('active');
   });
 
   if (filter === null) {
-    document.querySelectorAll('.button.secondary')[3]?.classList.add('active');
+    document.querySelectorAll('.chip')[3]?.classList.add('active');
   } else {
     const map = { Mobile: 0, Shop: 1, Emergency: 2 };
-    document.querySelectorAll('.button.secondary')[map[filter]]?.classList.add('active');
+    document.querySelectorAll('.chip')[map[filter]]?.classList.add('active');
   }
 }
 
