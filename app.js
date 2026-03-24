@@ -303,11 +303,11 @@ app.innerHTML = `
       Search
     </button>
 
-    <div style="margin-top:10px;text-align:center;">
-      <button onclick="setFilter('Mobile')">Mobile</button>
-      <button onclick="setFilter('Shop')">Shop</button>
-      <button onclick="setFilter('Emergency')">Emergency</button>
-      <button onclick="setFilter(null)">All</button>
+    <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+      <button class="button secondary" onclick="setFilter('Mobile')">Mobile</button>
+      <button class="button secondary" onclick="setFilter('Shop')">Shop</button>
+      <button class="button secondary" onclick="setFilter('Emergency')">Emergency</button>
+      <button class="button secondary" onclick="setFilter(null)">All</button>
     </div>
 
     <button class="button secondary" onclick="getLocation()">
