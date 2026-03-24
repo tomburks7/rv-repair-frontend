@@ -94,54 +94,62 @@ function getLocation() {
         ${data.length} RV Techs Near ${label}
       </div>
     </div>
+
+    <div class="container">
   `;
 
   data.forEach((t, i) => {
     const featured = i === 0;
+
     const services = Array.isArray(t.services)
       ? t.services.map(s => s.toLowerCase())
       : (t.services || "").toLowerCase();
-    console.log("SERVICES:", t.services, "→", services)
+
+    console.log("SERVICES:", t.services, "→", services);
+
     app.innerHTML += `
-  <div class="card result-card ${featured ? 'featured' : ''}">
-    
-    <div class="card-header">
-      <div class="card-title">${t.business_name}</div>
-    </div>
+      <div class="card result-card ${featured ? 'featured' : ''}">
 
-    <div class="card-sub">
-      📍 ${t.city}, ${t.state} 
-        <span class="distance-pill">${Math.round(t.distance)} miles</span>
-    </div>
+        <div class="card-header">
+          <div class="card-title">${t.business_name}</div>
+        </div>
 
-    <div class="card-desc">
-      ${t.description || 'Trusted RV repair service.'}
-    </div>
+        <div class="card-sub">
+          📍 ${t.city}, ${t.state}
+          <span class="distance-pill">${Math.round(t.distance)} miles</span>
+        </div>
 
-    <div class="card-tags">
-      ${services.includes('mobile') ? '<span class="badge mobile">Mobile</span>' : ''}
-      ${services.includes('shop') ? '<span class="badge shop">Shop</span>' : ''}
-      ${services.includes('emergency') ? '<span class="badge emergency">Emergency</span>' : ''}
-    </div>
+        <div class="card-desc">
+          ${t.description || 'Trusted RV repair service.'}
+        </div>
 
-    <button 
-      class="button primary"
-      onclick="${
-        unlocked[t.business_name]
-          ? `window.location.href='tel:${t.phone}'`
-          : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
-      }"
-    >
-      ${
-        unlocked[t.business_name]
-          ? "📞 Call Now"
-          : (featured ? "⭐ View Best Option" : "View Contact")
-      }
-    </button>
+        <div class="card-tags">
+          ${services.includes('mobile') ? '<span class="badge mobile">Mobile</span>' : ''}
+          ${services.includes('shop') ? '<span class="badge shop">Shop</span>' : ''}
+          ${services.includes('emergency') ? '<span class="badge emergency">Emergency</span>' : ''}
+        </div>
 
-  </div>
-`;
+        <button 
+          class="button primary"
+          onclick="${
+            unlocked[t.business_name]
+              ? `window.location.href='tel:${t.phone}'`
+              : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+          }"
+        >
+          ${
+            unlocked[t.business_name]
+              ? "📞 Call Now"
+              : (featured ? "⭐ View Best Option" : "View Contact")
+          }
+        </button>
+
+      </div>
+    `;
   });
+
+  // ✅ THIS is where it belongs (AFTER loop)
+  app.innerHTML += `</div>`;
 }
 
 function unlock(name, phone, id) {
