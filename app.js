@@ -85,7 +85,14 @@ function getLocation() {
   lastResults = data;
   lastLabel = label;
   
-  app.innerHTML = `<h2 style="padding:10px;">5 RV Techs Near ${label}</h2>`;
+  app.innerHTML = `
+  <div class="header">RV Repair Finder</div>
+
+  <div class="container">
+    <h2 style="margin:10px 0 5px 0;">5 RV Techs Near ${label}</h2>
+    <p style="color:gray;margin:0 0 10px 0;">Top matches closest to your location</p>
+  </div>
+`;
 
   data.forEach((t, i) => {
     const featured = i === 0;
