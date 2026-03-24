@@ -139,23 +139,37 @@
   padding: 6px 12px;
   font-size: 13px;
   border-radius: 999px;
-
   border: none;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
 
-  background: #eee;
   color: #333;
   transition: all 0.2s ease;
 }
 
-/* ACTIVE STATES MATCH BADGES */
-
-.chip.active {
-  color: white;
+/* DEFAULT COLORS (always visible) */
+.chip.mobile {
+  background: #e3f2fd;
+  color: #1976d2;
 }
 
+.chip.shop {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.chip.emergency {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.chip.all {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+/* ACTIVE = stronger version */
 .chip.active.mobile {
   background: #2196f3;
   color: white;
