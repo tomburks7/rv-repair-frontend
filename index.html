@@ -33,17 +33,28 @@
   }
 
   .card {
-    background: white;
-    padding: 16px;
-    margin-bottom: 14px;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  }
+  background: white;
+  padding: 18px;
+  margin: 12px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
 
   .featured {
-    border: 2px solid #007bff;
-  }
+  border: 2px solid #007bff;
+  box-shadow: 0 12px 30px rgba(0,123,255,0.15);
+}
 
+  .card p {
+  margin: 4px 0;
+}
+  
   .button {
     padding: 10px 14px;
     font-size: 14px;
