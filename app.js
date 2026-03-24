@@ -275,34 +275,37 @@ function searchLocation() {
         });
     });
 }
-app.innerHTML = `
-  <div class="header">RV Repair Finder</div>
+function renderHome() {
+  app.innerHTML = `
+    <div class="header">RV Repair Finder</div>
 
-  <div class="container">
+    <div class="container">
 
-    <input 
-      id="searchInput"
-      oninput="handleTyping()"
-      placeholder="Enter city or zip"
-      style="width:100%;padding:14px;border-radius:12px;border:1px solid #ddd;margin-bottom:10px;"
-    />
+      <input 
+        id="searchInput"
+        oninput="handleTyping()"
+        placeholder="Enter city or zip"
+        style="width:100%;padding:14px;border-radius:12px;border:1px solid #ddd;margin-bottom:10px;"
+      />
 
-    <div id="suggestions"></div>
+      <div id="suggestions"></div>
 
-    <button class="button primary full-width" onclick="searchLocation()">
-      Search
-    </button>
+      <button class="button primary full-width" onclick="searchLocation()">
+        Search
+      </button>
 
-    <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-      <button class="button secondary ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
-      <button class="button secondary ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
-      <button class="button secondary ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
-      <button class="button secondary ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+      <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+        <button class="button secondary ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
+        <button class="button secondary ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
+        <button class="button secondary ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
+        <button class="button secondary ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+      </div>
+
+      <button class="button secondary full-width" onclick="getLocation()">
+        Find Help Near Me
+      </button>
+
     </div>
-
-    <button class="button secondary" onclick="getLocation()">
-      Find Help Near Me
-    </button>
-
-  </div>
-`;
+  `;
+}
+renderHome();
