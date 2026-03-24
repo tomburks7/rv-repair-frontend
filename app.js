@@ -331,7 +331,7 @@ function renderHome() {
 
       </div>
 
-      <button class="button secondary full-width" onclick="getLocation()">
+      <button id="findNearbyBtn" onclick="getLocation()">
         📍 Find Help Near Me
       </button>
 
