@@ -98,6 +98,7 @@ function getLocation() {
     const featured = i === 0;
     const services = (t.services || t.Services || "").toLowerCase();
 
+    console.log("SERVICES:", t.services, "→", services)
     app.innerHTML += `
   <div class="card result-card ${featured ? 'featured' : ''}">
     
@@ -115,9 +116,9 @@ function getLocation() {
     </div>
 
     <div class="card-tags">
-      ${t.services.includes('mobile') ? '<span class="badge mobile">Mobile</span>' : ''}
-      ${t.services.includes('shop') ? '<span class="badge shop">Shop</span>' : ''}
-      ${t.services.includes('emergency') ? '<span class="badge emergency">Emergency</span>' : ''}
+      ${services.includes('mobile') ? '<span class="badge mobile">Mobile</span>' : ''}
+      ${services.includes('shop') ? '<span class="badge shop">Shop</span>' : ''}
+      ${services.includes('emergency') ? '<span class="badge emergency">Emergency</span>' : ''}
     </div>
 
     <button 
