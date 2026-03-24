@@ -291,29 +291,32 @@ function renderHome() {
 
     <div class="container">
 
-      <input 
-        id="searchInput"
-        value="${document.getElementById('searchInput')?.value || ''}"
-        oninput="handleTyping()"
-        placeholder="Enter city or zip"
-        style="width:100%;padding:14px;border-radius:12px;border:1px solid #ddd;margin-bottom:10px;"
-      />
+      <div class="card">
 
-      <div id="suggestions"></div>
+        <input 
+          id="searchInput"
+          oninput="handleTyping()"
+          placeholder="Enter city or zip"
+          class="input"
+        />
 
-      <button class="button primary full-width" onclick="searchLocation()">
-        Search
-      </button>
+        <div id="suggestions"></div>
 
-      <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
-        <button class="button secondary ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
-        <button class="button secondary ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
-        <button class="button secondary ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
-        <button class="button secondary ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+        <button class="button primary full-width" onclick="searchLocation()">
+          Search
+        </button>
+
+        <div class="filters">
+          <button class="chip ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
+          <button class="chip ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
+          <button class="chip ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
+          <button class="chip ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+        </div>
+
       </div>
 
       <button class="button secondary full-width" onclick="getLocation()">
-        Find Help Near Me
+        📍 Find Help Near Me
       </button>
 
     </div>
