@@ -122,7 +122,7 @@ function getLocation() {
   class="button ${featured ? 'primary' : 'secondary'} full-width"
   onclick="${
     unlocked[t.business_name]
-      ? `window.location.href='tel:${t.phone}'`
+      ? `window.location.href='tel:${t.phone.replace(/[^0-9]/g, "")}'`
       : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
   }"
 >
