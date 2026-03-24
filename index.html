@@ -139,12 +139,31 @@
   padding: 6px 12px;
   font-size: 13px;
   border-radius: 999px;
+  border: none;
   background: #eee;
+  color: #333;
 }
 
+/* ACTIVE STATES MATCH BADGES */
+
 .chip.active {
-  background: #007bff;
   color: white;
+}
+
+.chip.active:nth-child(1) {
+  background: #2196f3; /* Mobile (blue) */
+}
+
+.chip.active:nth-child(2) {
+  background: #4caf50; /* Shop (green) */
+}
+
+.chip.active:nth-child(3) {
+  background: #f44336; /* Emergency (red) */
+}
+
+.chip.active:nth-child(4) {
+  background: #007bff; /* All (default blue) */
 }
 
 #findNearbyBtn {
