@@ -70,6 +70,7 @@ function getLocation() {
         }))
         .filter(t => {
           if (isNaN(t.distance)) return false;
+          if (t.distance > 200) return false; // limit to 200 miles
           if (!activeFilter) return true;
           return (t.services || t.Services || "").includes(activeFilter);
         })
