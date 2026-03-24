@@ -12,7 +12,7 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
-    background: #f5f7fb;
+    background: linear-gradient(to bottom, #f5f7fb, #eef1f6);
     color: #111;
   }
 
@@ -38,12 +38,14 @@
 
 .card {
   background: white;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 20px;
 
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.06),
+    0 2px 6px rgba(0,0,0,0.04);
+}
 .card:active {
   transform: scale(0.98);
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
@@ -73,17 +75,17 @@
   }
   
   .primary {
-    background: #007bff;
+    : #007bff;
     color: white;
   }
 
   .secondary {
-    background: #333;
+    : #333;
     color: white;
   }
 
   .success {
-    background: #28a745;
+    : #28a745;
     color: white;
   }
 
