@@ -299,7 +299,7 @@ app.innerHTML = `
 
     <div id="suggestions"></div>
 
-    <button class="button primary" onclick="searchLocation()">
+    class="button primary full-width" onclick="searchLocation()">
       Search
     </button>
 
