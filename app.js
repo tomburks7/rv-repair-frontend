@@ -90,7 +90,9 @@ function getLocation() {
     <div class="header">RV Repair Finder</div>
 
     <div class="container">
-      <h2 style="margin:16px 0 6px 0; font-size:18px; color:white;">5 RV Techs Near ${label}</h2>
+      <div class="results-header">
+        ${data.length} RV Techs Near ${label}
+      </div>
     </div>
   `;
 
