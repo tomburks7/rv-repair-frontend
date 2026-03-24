@@ -232,7 +232,6 @@ function handleTyping() {
 function selectSuggestion(value) {
   document.getElementById("searchInput").value = value;
   document.getElementById("suggestions").innerHTML = "";
-  searchLocation();
 }
 
 function searchLocation() {
