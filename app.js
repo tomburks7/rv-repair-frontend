@@ -312,19 +312,20 @@ function renderHome() {
 
       <div class="card">
 
-        <input 
-          id="searchInput"
-          oninput="handleTyping()"
-          placeholder="Enter city or zip"
-          class="input"
-        />
+        <div class="search-bar">
+  <input 
+    id="searchInput"
+    class="search-input"
+    placeholder="City or Zip (e.g. Dallas, 75001)"
+    oninput="handleTyping()"
+  />
 
-        <div id="suggestions"></div>
+  <button class="search-btn" onclick="searchLocation()">
+    🔍 Search
+  </button>
+</div>
 
-        <button class="button primary full-width" onclick="searchLocation()">
-          Search
-        </button>
-
+<div id="suggestions"></div>
         <div class="filters">
           <button class="chip mobile ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
           <button class="chip shop ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
