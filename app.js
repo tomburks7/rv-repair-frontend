@@ -106,7 +106,8 @@ function getLocation() {
     </div>
 
     <div class="card-sub">
-      📍 ${t.city}, ${t.state} • ${Math.round(t.distance)} miles away
+      📍 ${t.city}, ${t.state} 
+        <span class="distance-pill">${Math.round(t.distance)} miles</span>
     </div>
 
     <div class="card-desc">
