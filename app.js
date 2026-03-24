@@ -99,42 +99,43 @@ function getLocation() {
     const services = (t.services || t.Services || "").toLowerCase();
 
     app.innerHTML += `
-      <div class="card ${featured ? "featured" : ""}">
+  <div class="card result-card ${featured ? 'featured' : ''}">
+    
+    <div class="card-header">
+      <div class="card-title">${t.business_name}</div>
+    </div>
 
-        <h3 style="margin:0 0 8px 0; font-size:${featured ? "20px" : "16px"};">
-          ${featured ? "⭐ Best RV Technician Near You" : "Mobile RV Technician"}
-        </h3>
+    <div class="card-sub">
+      📍 ${t.city}, ${t.state} • ${Math.round(t.distance)} miles away
+    </div>
 
-        <p>${t.city || t.City}, ${t.state || t.State}</p>
-        <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
+    <div class="card-desc">
+      ${t.description || 'Trusted RV repair service.'}
+    </div>
 
-        <div style="margin:8px 0;">
-          ${services.includes("mobile") ? '<span class="badge mobile">Mobile</span>' : ""}
-          ${services.includes("shop") ? '<span class="badge shop">Shop</span>' : ""}
-          ${services.includes("emergency") ? '<span class="badge emergency">Emergency</span>' : ""}
-        </div>
+    <div class="card-tags">
+      ${t.services.includes('mobile') ? '<span class="badge mobile">Mobile</span>' : ''}
+      ${t.services.includes('shop') ? '<span class="badge shop">Shop</span>' : ''}
+      ${t.services.includes('emergency') ? '<span class="badge emergency">Emergency</span>' : ''}
+    </div>
 
-        <p style="font-size:14px;">${t.description}</p>
+    <button 
+      class="button ${featured ? 'primary' : 'secondary'}"
+      onclick="${
+        unlocked[t.business_name]
+          ? `window.location.href='tel:${t.phone}'`
+          : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
+      }"
+    >
+      ${
+        unlocked[t.business_name]
+          ? "📞 Call Now"
+          : (featured ? "⭐ View Best Option" : "View Contact")
+      }
+    </button>
 
-        <p style="color:gray;">🔒 Unlock to view business name & contact</p>
-
-        <button 
-          class="button ${featured ? 'primary' : 'secondary'} full-width"
-          onclick="${
-            unlocked[t.business_name]
-              ? `window.location.href='tel:${t.phone.replace(/[^0-9]/g, "")}'`
-              : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
-          }"
-        >
-          ${
-            unlocked[t.business_name]
-              ? "Call Now"
-              : (featured ? "View Best Option" : "View Contact")
-          }
-        </button>
-
-      </div>
-    `;
+  </div>
+`;
   });
 }
 
