@@ -56,10 +56,27 @@
 }
 
   .featured {
-  border: 2px solid #007bff;
-  box-shadow: 0 12px 30px rgba(0,123,255,0.15);
+  border: none;
+  background: linear-gradient(135deg, #f0f7ff, #ffffff);
+  box-shadow: 0 8px 24px rgba(30,136,229,0.15);
+  position: relative;
 }
 
+.featured::before {
+  content: "⭐ Best Match";
+  position: absolute;
+  top: -10px;
+  left: 16px;
+
+  background: #1e88e5;
+  color: white;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  box-shadow: 0 4px 10px rgba(30,136,229,0.3);
+}
+  
   .card p {
   margin: 4px 0;
 }
