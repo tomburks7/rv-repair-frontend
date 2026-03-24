@@ -100,8 +100,8 @@ function getLocation() {
 
     app.innerHTML += `
       <div class="card ${featured ? "featured" : ""}">
-        <h3 style="margin:0 0 8px 0;">
-          ${featured ? "⭐ Best Option" : "Mobile RV Technician"}
+        <h3 style="margin:0 0 8px 0; font-size:${featured ? "20px" : "16px"};">
+          ${featured ? "⭐ Best RV Technician Near You" : "Mobile RV Technician"}
         </h3>
 
         <p>${t.city || t.City}, ${t.state || t.State}</p>
