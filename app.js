@@ -96,8 +96,9 @@ function getLocation() {
 
   data.forEach((t, i) => {
     const featured = i === 0;
-    const services = (t.services || t.Services || "").toLowerCase();
-
+    const services = Array.isArray(t.services)
+      ? t.services.map(s => s.toLowerCase())
+      : (t.services || "").toLowerCase();
     console.log("SERVICES:", t.services, "→", services)
     app.innerHTML += `
   <div class="card result-card ${featured ? 'featured' : ''}">
