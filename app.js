@@ -313,12 +313,15 @@ function renderHome() {
       <div class="card">
 
         <div class="search-bar">
+  <div class="input-wrapper">
+  <span class="input-icon">📍</span>
   <input 
     id="searchInput"
     class="search-input"
     placeholder="City or Zip (e.g. Dallas, 75001)"
     oninput="handleTyping()"
   />
+</div>
 
   <button class="search-btn" onclick="searchLocation()">
     🔍 Search
