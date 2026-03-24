@@ -146,9 +146,11 @@ function setFilter(filter) {
 
   // If results exist → update results
   if (lastResults && lastResults.length > 0) {
+  if (document.getElementById("searchInput")?.value) {
     searchLocation();
-    return;
   }
+  return;
+}
 
   // Otherwise → just update button styles WITHOUT re-rendering
   document.querySelectorAll('.chip').forEach(btn => {
