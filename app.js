@@ -121,7 +121,6 @@ function getLocation() {
 
   </div>
 `;
-  });
 }
 
 function unlock(name, phone, id) {
