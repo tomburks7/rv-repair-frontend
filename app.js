@@ -150,12 +150,22 @@ function unlock(name, phone, id) {
 function setFilter(filter) {
   activeFilter = filter;
 
-  // Only refresh results if we actually have results
+  // If results exist → update results
   if (lastResults && lastResults.length > 0) {
     showResults(lastResults, lastLabel);
+    return;
+  }
+
+  // Otherwise → just update button styles WITHOUT re-rendering
+  document.querySelectorAll('.button.secondary').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  if (filter === null) {
+    document.querySelectorAll('.button.secondary')[3]?.classList.add('active');
   } else {
-    // Just re-render home screen so buttons update
-    renderHome();
+    const map = { Mobile: 0, Shop: 1, Emergency: 2 };
+    document.querySelectorAll('.button.secondary')[map[filter]]?.classList.add('active');
   }
 }
 
