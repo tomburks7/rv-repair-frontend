@@ -122,18 +122,31 @@
   color: white;
 }
 
-  .badge.mobile { background: #e3f2fd; }
-  .badge.shop { background: #e8f5e9; }
-  .badge.emergency { background: #ffebee; }
+  .badge.mobile {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+  .badge.shop {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+  .badge.emergency {
+  background: #ffebee;
+  color: #c62828;
+}
   
   .badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 12px;
-    margin-right: 6px;
-  }
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+
+  margin-right: 6px;
+}
 .input {
   width: 100%;
   padding: 14px;
@@ -295,11 +308,17 @@ button.chip.active.all {
   border-radius: 16px;
   padding: 14px;
   margin-bottom: 12px;
-
+  
   background: white;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
 }
 
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+}
+  
 .card-header {
   margin-bottom: 6px;
 }
@@ -343,7 +362,7 @@ button.chip.active.all {
   border-radius: 999px;
   font-size: 12px;
   margin-left: 6px;
-  font-weight: 500;
+  font-weight: 600;
 }
   
 #findNearbyBtn:active {
