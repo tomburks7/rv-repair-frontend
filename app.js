@@ -90,50 +90,37 @@ function getLocation() {
   <div class="header">RV Repair Finder</div>
 
   <div class="container">
-    <h2 style="margin:10px 0 5px 0;">5 RV Techs Near ${label}</h2>
-    <p style="color:gray;margin:0 0 10px 0;">Top matches closest to your location</p>
+
+    <div class="card">
+
+      <input 
+        id="searchInput"
+        oninput="handleTyping()"
+        placeholder="Enter city or zip"
+        class="input"
+      />
+
+      <div id="suggestions"></div>
+
+      <button class="button primary full-width" onclick="searchLocation()">
+        Search
+      </button>
+
+      <div class="filters">
+        <button class="chip ${activeFilter === 'Mobile' ? 'active' : ''}" onclick="setFilter('Mobile')">Mobile</button>
+        <button class="chip ${activeFilter === 'Shop' ? 'active' : ''}" onclick="setFilter('Shop')">Shop</button>
+        <button class="chip ${activeFilter === 'Emergency' ? 'active' : ''}" onclick="setFilter('Emergency')">Emergency</button>
+        <button class="chip ${activeFilter === null ? 'active' : ''}" onclick="setFilter(null)">All</button>
+      </div>
+
+    </div>
+
+    <button class="button secondary full-width" onclick="getLocation()">
+      📍 Find Help Near Me
+    </button>
+
   </div>
 `;
-
-  data.forEach((t, i) => {
-    const featured = i === 0;
-    const services = t.services || t.Services || "";
-
-    app.innerHTML += `
-      <div class="card ${featured ? "featured" : ""}">
-        <h3 style="margin:0 0 8px 0; font-size:${featured ? "20px" : "16px"};">
-          ${featured ? "⭐ Best RV Technician Near You" : "Mobile RV Technician"}
-        </h3>
-
-        <p>${t.city || t.City}, ${t.state || t.State}</p>
-        <p><strong>${Number(t.distance).toFixed(1)} miles away</strong></p>
-
-        <div style="margin:8px 0;">
-          ${services.includes("Mobile") ? '<span class="badge mobile">Mobile</span>' : ""}
-          ${services.includes("Shop") ? '<span class="badge shop">Shop</span>' : ""}
-          ${services.includes("Emergency") ? '<span class="badge emergency">Emergency</span>' : ""}
-        </div>
-
-        <p style="font-size:14px;">${t.description}</p>
-
-        <p style="color:gray;">🔒 Unlock to view business name & contact</p>
-
-        <button 
-  class="button ${featured ? 'primary' : 'secondary'} full-width"
-  onclick="${
-    unlocked[t.business_name]
-      ? `window.location.href='tel:${t.phone.replace(/[^0-9]/g, "")}'`
-      : `unlock('${t.business_name}', '${t.phone}', '${t.business_name}')`
-  }"
->
-          ${
-            unlocked[t.business_name]
-              ? "Call Now"
-              : (featured ? "View Best Option" : "View Contact")
-          }
-        </button>
-      </div>
-    `;
   });
 }
 
